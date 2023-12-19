@@ -42,4 +42,22 @@ MongoClient.connect(process.env.MONGODB_URL, {
       })
       .catch((error) => console.error(error));
   });
+
+  app.put("/quotes", (req, res) => {
+    quotesCollection
+      .findOneAndUpdate(
+        { name: "Yoda" },
+        {
+          $set: {
+            name: req.body.name,
+            quote: req.body.quote,
+          },
+        },
+        { upsert: true }
+      )
+      .then((result) => {
+        res.json("Success");
+      })
+      .catch((error) => console.error(error));
+  });
 });
