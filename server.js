@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const MongoClient = require("mongodb").MongoClient;
 const dotenv = require("dotenv");
+
 require("dotenv").config();
 
 MongoClient.connect(process.env.MONGODB_URL, {
@@ -57,6 +58,18 @@ MongoClient.connect(process.env.MONGODB_URL, {
       )
       .then((result) => {
         res.json("Success");
+      })
+      .catch((error) => console.error(error));
+  });
+
+  app.delete("/quotes", (req, res) => {
+    quotesCollection
+      .deleteOne({ name: req.body.name })
+      .then((result) => {
+        if (result.deletedCount === 0) {
+          return res.json("No quote to delete");
+        }
+        res.json(`Deleted Darth Vader's quote`);
       })
       .catch((error) => console.error(error));
   });
