@@ -5,9 +5,11 @@ const MongoClient = require("mongodb").MongoClient;
 const dotenv = require("dotenv");
 require("dotenv").config();
 
-MongoClient.connect(process.env.MONGODB_URL, (err, client) => {
-  if (err) return console.error(err);
+MongoClient.connect(process.env.MONGODB_URL, {
+  useUnifiedTopology: true,
+}).then((client) => {
   console.log("Connected to Database");
+  const db = client.db("star-wars-quotes");
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
