@@ -14,16 +14,20 @@ MongoClient.connect(process.env.MONGODB_URL, {
 
   app.use(bodyParser.urlencoded({ extended: true }));
 
+  app.use(express.static("public"));
+
   app.listen(3000, function () {
     console.log("listening on 3000");
   });
+
+  app.set("view engine", "ejs");
 
   app.get("/", (req, res) => {
     db.collection("quotes")
       .find()
       .toArray()
       .then((results) => {
-        console.log(results);
+        res.render("index.ejs", { quotes: results });
       })
       .catch((error) => console.error(error));
   });
